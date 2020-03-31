@@ -1,0 +1,115 @@
+buildscript {
+	ext.kotlin_version = "1.3.61"
+	repositories {
+		jcenter()
+		maven {
+			name = "forge"
+			url = "https://files.minecraftforge.net/maven"
+		}
+	}
+	dependencies {
+		classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+		classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
+	}
+}
+
+
+apply plugin: "kotlin"
+apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "com.github.johnrengelman.shadow"
+
+version = modVersion
+group = modGroup
+archivesBaseName = modBaseName
+
+minecraft {
+	version = project.forgeVersion
+	runDir = "run"
+	mappings = project.mcpVersion
+	makeObfSourceJar = false
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+}
+
+jar {
+	manifest {
+		attributes(
+			"FMLCorePluginContainsFMLMod": "true",
+			"FMLCorePlugin": "dev.binclub.falcon.FalconCoreMod",
+			"ForceLoadAsMod": "true"
+		)
+	}
+}
+
+reobf {
+	shadowJar {
+		mappingType = 'SEARGE'
+		classpath = sourceSets.main.compileClasspath
+	}
+}
+
+shadowJar {
+	dependencies {
+		include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7"))
+		include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8"))
+		include(dependency("org.jetbrains.kotlin:kotlin-stdlib-common"))
+		include(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+	}
+	classifier = 'release'
+}
+
+task clientJar(type: Jar, dependsOn: jar) {
+	from(zipTree(shadowJar.archivePath)) {
+		include "com/myclient/**"
+	}
+	baseName = ""
+	version = ""
+	classifier = "client"
+}
+
+task loaderJar(type: Jar, dependsOn: shadowJar) {
+	from(zipTree(shadowJar.archivePath)) {
+		exclude "com/myclient/**"
+	}
+	baseName = ""
+	version = ""
+	classifier = "loader"
+	manifest = jar.manifest
+}
+
+build.dependsOn(clientJar, loaderJar)
+
+processResources {
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
+
+	from(sourceSets.main.resources.srcDirs) {
+		include "mcmod.info"
+		expand "version": project.version, "mcversion": project.minecraft.version
+	}
+
+	from(sourceSets.main.resources.srcDirs) {
+		exclude "mcmod.info"
+	}
+}
+
+sourceSets {
+	main.java.srcDirs = ["src/main/java", "src/main/kotlin"]
+	main.resources.srcDirs = ["src/main/resources"]
+}
+
+compileKotlin {
+	kotlinOptions {
+		jvmTarget = "1.8"
+	}
+}

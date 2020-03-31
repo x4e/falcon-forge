@@ -1,0 +1,18 @@
+[
+	{
+		"modid": "falcon",
+		"name": "Falcon",
+		"description": "",
+		"version": "${version}",
+		"mcversion": "${mcversion}",
+		"url": "",
+		"updateUrl": "",
+		"authorList": [
+			"cookiedragon234"
+		],
+		"credits": "",
+		"logoFile": "",
+		"screenshots": [],
+		"dependencies": []
+	}
+]
