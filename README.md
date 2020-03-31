@@ -11,7 +11,9 @@ A framework with which to remotely load classes into a minecraft forge mod's cla
 
 1. Clone the repo
 2. Copy your mod source into falcon's source
-3. Rename any instances of com/yourclient to your actual base mod package.
+3. Rename any instances of com/yourclient to your actual base mod package
+4. Upload loader.jar to your server. Update the url in Loader.kt with the url of the uploaded jar
+5. Distribute client.jar to your users
 
 ## Next steps
 
