@@ -12,3 +12,7 @@ A framework with which to remotely load classes into a minecraft forge mod's cla
 1. Clone the repo
 2. Copy your mod source into falcon's source
 3. Rename any instances of com/yourclient to your actual base mod package.
+
+## Next steps
+
+If you are planning on using remote loading as a security measure, I recommend using obfuscation as well. I recommend checking out binscure (https://discord.gg/MaqN7gA), and obfuscator that I help develop.
