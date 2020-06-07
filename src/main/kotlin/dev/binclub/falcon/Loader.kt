@@ -1,5 +1,6 @@
 package dev.binclub.falcon
 
+import dev.binclub.falcon.antidump.CookieFuckery
 import net.minecraft.launchwrapper.Launch
 import net.minecraft.launchwrapper.LaunchClassLoader
 import java.net.URL
@@ -12,6 +13,13 @@ import java.util.zip.ZipInputStream
 private const val clientUrl = "https://yourwebsite/client.jar"
 
 fun load() {
+	// NOTE: These WILL break when debug tools such as IntelliJ are attached to the process
+	// THIS IS PURPOSEFUL
+	CookieFuckery.checkLaunchFlags()
+	CookieFuckery.disableJavaAgents()
+	CookieFuckery.setPackageNameFilter()
+	CookieFuckery.dissasembleStructs()
+	
 	println("Falcon is downloading classes...")
 	
 	val resourceCache = LaunchClassLoader::class.java.getDeclaredField("resourceCache").let {
