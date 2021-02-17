@@ -17,4 +17,4 @@ A framework with which to remotely load classes into a minecraft forge mod's cla
 
 ## Next steps
 
-If you are planning on using remote loading as a security measure, I recommend using obfuscation as well. I recommend checking out binscure ([binclub.dev/binscure](https://binclub.dev/binscure)), and obfuscator that I help develop.
+If you are planning on using remote loading as a security measure, I recommend using obfuscation as well. I recommend checking out binscure ([binclub.dev/binscure](https://binclub.dev/binscure)), an obfuscator that I help develop.
